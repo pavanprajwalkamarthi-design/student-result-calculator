@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Result Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background: #0f0c29;
+            position: relative;
+        }
+
+        /* Animated Gradient Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            bottom: -10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animated Shapes */
+        .shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: morph 15s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            background: #fff;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background: #fff;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            animation-delay: 4s;
+        }
+
+        .shape:nth-child(4) {
+            top: 60%;
+            right: 10%;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes morph {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                border-radius: 50%;
+            }
+            25% {
+                transform: translate(50px, -50px) rotate(90deg) scale(1.2);
+                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            }
+            50% {
+                transform: translate(0, 50px) rotate(180deg) scale(0.8);
+                border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+            }
+            75% {
+                transform: translate(-50px, -25px) rotate(270deg) scale(1.1);
+                border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+            }
+        }
+
+        /* Glassmorphism Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            animation: slideIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 10s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 2.8em;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(255, 255, 255, 0.5), 0 0 90px rgba(255, 255, 255, 0.3); }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subject-group {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .subject-group:hover::before {
+            left: 100%;
+        }
+
+        .subject-group:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .subject-group.lab {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .subject-group:not(.lab) {
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .subject-group h3 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .input-wrapper:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            font-size: 1.1em;
+            color: #fff;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        input[type="number"]:focus {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        input[type="number"].error {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            animation: shake 0.5s;
+        }
+
+        input[type="number"].success {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f, #f9ca24);
+            background-size: 200% 200%;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: gradientShift 3s ease infinite;
+            box-shadow: 0 10px 30px rgba(238, 90, 111, 0.4);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
+            z-index: -1;
+        }
+
+        .calculate-btn:hover::before {
+            left: 100%;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(238, 90, 111, 0.6);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .results-container {
+            display: none;
+            animation: fadeInUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 1;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .result-card:hover::after {
+            opacity: 1;
+        }
+
+        .result-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-card.fail {
+            background: rgba(231, 76, 60, 0.3);
+            border-color: rgba(231, 76, 60, 0.5);
+            animation: pulseRed 2s infinite;
+        }
+
+        .result-card.pass {
+            background: rgba(39, 174, 96, 0.3);
+            border-color: rgba(39, 174, 96, 0.5);
+            animation: pulseGreen 2s infinite;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(231, 76, 60, 0); }
+        }
+
+        @keyframes pulseGreen {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4); }
+            50% { box-shadow: 0 0 0 20px rgba(39, 174, 96, 0); }
+        }
+
+        .result-label {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 3em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: countUp 1s ease-out;
+        }
+
+        @keyframes countUp {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            animation: slideInUp 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .status-message.pass {
+            background: rgba(39, 174, 96, 0.2);
+            color: #2ecc71;
+            border-color: rgba(39, 174, 96, 0.5);
+            box-shadow: 0 0 30px rgba(39, 174, 96, 0.3);
+        }
+
+        .status-message.fail {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border-color: rgba(231, 76, 60, 0.5);
+            box-shadow: 0 0 30px rgba(231, 76, 60, 0.3);
+        }
+
+        .subject-status {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .subject-status h4 {
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .status-list {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .status-list li {
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: slideInLeft 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .status-list li:nth-child(1) { animation-delay: 0.1s; }
+        .status-list li:nth-child(2) { animation-delay: 0.2s; }
+        .status-list li:nth-child(3) { animation-delay: 0.3s; }
+        .status-list li:nth-child(4) { animation-delay: 0.4s; }
+        .status-list li:nth-child(5) { animation-delay: 0.5s; }
+        .status-list li:nth-child(6) { animation-delay: 0.6s; }
+        .status-list li:nth-child(7) { animation-delay: 0.7s; }
+        .status-list li:nth-child(8) { animation-delay: 0.8s; }
+        .status-list li:nth-child(9) { animation-delay: 0.9s; }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .status-list li:hover {
+            transform: translateX(10px) scale(1.02);
+        }
+
+        .status-list li.pass {
+            background: rgba(39, 174, 96, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+        }
+
+        .status-list li.fail {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .badge {
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .badge.pass {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .badge.fail {
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            color: white;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Floating Emojis */
+        .floating-emoji {
+            position: fixed;
+            font-size: 2em;
+            animation: float-emoji 4s ease-in-out infinite;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-value {
+                font-size: 2em;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Animated Shapes -->
+    <div class="shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Floating Emojis -->
+    <div class="floating-emoji" style="top: 10%; left: 5%; animation-delay: 0s;">📚</div>
+    <div class="floating-emoji" style="top: 30%; right: 8%; animation-delay: 1s;">🎓</div>
+    <div class="floating-emoji" style="bottom: 20%; left: 8%; animation-delay: 2s;">✨</div>
+    <div class="floating-emoji" style="bottom: 40%; right: 5%; animation-delay: 3s;">📝</div>
+
+    <div class="container">
+        <h1>📚 Student Result Calculator</h1>
+        <p class="subtitle">Enter marks for 6 Theory and 3 Lab subjects (Max 100 each)</p>
+
+        <form id="resultForm">
+            <div class="subjects-grid">
+                <!-- Theory Subjects -->
+                <div class="subject-group">
+                    <h3>📖 Theory Subjects</h3>
+                    <div class="input-wrapper">
+                        <label for="theory1">Optimization Techniques</label>
+                        <input type="number" id="theory1" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="theory2">Probability & Statistics</label>
+                        <input type="number" id="theory2" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="theory3">Machine Learning</label>
+                        <input type="number" id="theory3" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="theory4">Database Management Systems</label>
+                        <input type="number" id="theory4" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="theory5">Digital Logic and Computer Organization</label>
+                        <input type="number" id="theory5" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="theory6">Design Thinking & Innovation</label>
+                        <input type="number" id="theory6" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                </div>
+
+                <!-- Lab Subjects -->
+                <div class="subject-group lab">
+                    <h3>🔬 Lab Subjects</h3>
+                    <div class="input-wrapper">
+                        <label for="lab1">Machine Learning - Lab</label>
+                        <input type="number" id="lab1" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="lab2">Database Management Systems - LAB</label>
+                        <input type="number" id="lab2" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                    <div class="input-wrapper">
+                        <label for="lab3">Full Stack Development -I LAB</label>
+                        <input type="number" id="lab3" min="0" max="100" placeholder="0-100" required>
+                        <span class="error-message">Mark must be between 0-100</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateResult()">
+                🧮 Calculate Result
+            </button>
+        </form>
+
+        <div id="results" class="results-container">
+            <div class="result-cards">
+                <div class="result-card" id="totalCard">
+                    <div class="result-label">Total Marks</div>
+                    <div class="result-value" id="totalMarks">0</div>
+                    <div style="font-size: 0.9em; margin-top: 5px; opacity: 0.8;">/ 900</div>
+                </div>
+                <div class="result-card" id="percentageCard">
+                    <div class="result-label">Percentage</div>
+                    <div class="result-value" id="percentage">0%</div>
+                </div>
+                <div class="result-card" id="resultCard">
+                    <div class="result-label">Result</div>
+                    <div class="result-value" id="resultStatus">-</div>
+                </div>
+            </div>
+
+            <div id="statusMessage" class="status-message"></div>
+
+            <div class="subject-status">
+                <h4>📋 Subject-wise Status</h4>
+                <ul id="statusList" class="status-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 20 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Confetti effect for pass
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // Real-time validation
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function() {
+                validateInput(this);
+            });
+            
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        function validateInput(input) {
+            const value = parseFloat(input.value);
+            const errorMsg = input.nextElementSibling;
+            
+            if (input.value === '') {
+                input.classList.remove('error', 'success');
+                errorMsg.style.display = 'none';
+                return false;
+            }
+            
+            if (isNaN(value) || value < 0 || value > 100) {
+                input.classList.add('error');
+                input.classList.remove('success');
+                errorMsg.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('error');
+                input.classList.add('success');
+                errorMsg.style.display = 'none';
+                return true;
+            }
+        }
+
+        function calculateResult() {
+            const theoryInputs = [
+                document.getElementById('theory1'),
+                document.getElementById('theory2'),
+                document.getElementById('theory3'),
+                document.getElementById('theory4'),
+                document.getElementById('theory5'),
+                document.getElementById('theory6')
+            ];
+            
+            const labInputs = [
+                document.getElementById('lab1'),
+                document.getElementById('lab2'),
+                document.getElementById('lab3')
+            ];
+            
+            const allInputs = [...theoryInputs, ...labInputs];
+            
+            let isValid = true;
+            let emptyFields = false;
+            
+            allInputs.forEach(input => {
+                if (input.value === '') {
+                    emptyFields = true;
+                    input.classList.add('error');
+                } else if (!validateInput(input)) {
+                    isValid = false;
+                }
+            });
+            
+            if (emptyFields) {
+                shakeContainer();
+                return;
+            }
+            
+            if (!isValid) {
+                shakeContainer();
+                return;
+            }
+            
+            const theoryMarks = theoryInputs.map(input => parseFloat(input.value));
+            const labMarks = labInputs.map(input => parseFloat(input.value));
+            const allMarks = [...theoryMarks, ...labMarks];
+            
+            const totalMarks = allMarks.reduce((sum, mark) => sum + mark, 0);
+            const percentage = (totalMarks / 900) * 100;
+            
+            const failedSubjects = [];
+            const subjectNames = [
+                'Optimization Techniques', 'Probability & Statistics', 'Machine Learning', 'Database Management Systems', 'Digital Logic and Computer Organization', 'Design Thinking & Innovation',
+                'Machine Learning - Lab', 'Database Management Systems - LAB', 'Full Stack Development -I LAB'
+            ];
+            
+            allMarks.forEach((mark, index) => {
+                if (mark < 40) {
+                    failedSubjects.push({ name: subjectNames[index], mark: mark });
+                }
+            });
+            
+            const isPass = failedSubjects.length === 0;
+            
+            if (isPass) {
+                createConfetti();
+            }
+            
+            displayResults(totalMarks, percentage, isPass, failedSubjects, subjectNames, allMarks);
+        }
+
+        function shakeContainer() {
+            const container = document.querySelector('.container');
+            container.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 500);
+        }
+
+        function displayResults(total, percentage, isPass, failedSubjects, subjectNames, allMarks) {
+            const resultsDiv = document.getElementById('results');
+            const resultCard = document.getElementById('resultCard');
+            const statusMessage = document.getElementById('statusMessage');
+            const statusList = document.getElementById('statusList');
+            
+            resultsDiv.classList.add('show');
+            
+            animateValue('totalMarks', 0, total, 1500);
+            animateValue('percentage', 0, Math.round(percentage * 100) / 100, 1500, '%');
+            
+            resultCard.className = 'result-card ' + (isPass ? 'pass' : 'fail');
+            document.getElementById('resultStatus').textContent = isPass ? 'PASS' : 'FAIL';
+            
+            statusMessage.className = 'status-message ' + (isPass ? 'pass' : 'fail');
+            if (isPass) {
+                let division = '';
+                if (percentage >= 75) division = 'First Class with Distinction! 🏆';
+                else if (percentage >= 60) division = 'First Class! 🥇';
+                else if (percentage >= 50) division = 'Second Class! 🥈';
+                else division = 'Third Class! 📜';
+                
+                statusMessage.innerHTML = `🎉 Congratulations! You have passed with <strong>${division}</strong>`;
+            } else {
+                statusMessage.innerHTML = `❌ Sorry, you have failed. ${failedSubjects.length} subject(s) below 40 marks.<br>Minimum 40 required in each subject to pass.`;
+            }
+            
+            statusList.innerHTML = '';
+            allMarks.forEach((mark, index) => {
+                const li = document.createElement('li');
+                const passed = mark >= 40;
+                li.className = passed ? 'pass' : 'fail';
+                li.innerHTML = `
+                    <span>${subjectNames[index]}</span>
+                    <span class="badge ${passed ? 'pass' : 'fail'}">${mark} - ${passed ? 'PASS' : 'FAIL'}</span>
+                `;
+                statusList.appendChild(li);
+            });
+            
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function animateValue(id, start, end, duration, suffix = '') {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            stepTime = Math.max(stepTime, minTimer);
+            
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+            
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round((end - (remaining * range)) * 100) / 100;
+                obj.innerHTML = value + suffix;
+                if (value == end) {
+                    clearInterval(timer);
+                }
+            }
+            
+            timer = setInterval(run, stepTime);
+            run();
+        }
+    </script>
+</body>
+</html>
